@@ -17,9 +17,15 @@ module MiniTest
           elsif @obj[key].is_a? Array
             @obj[key].each_with_index { |h, i| Comparer.new(h, @other[key][i], @context) }
           else
-            @context.assert_equal h1[key], h2[key], "Key '#{key}' did not match. [#{@context.method(method_name.to_sym).source_location.join(':')}]"
+            @context.assert_equal @obj[key], @other[key], "Key '#{key}' did not match. [#{@context.method(method_name.to_sym).source_location.join(':')}]"
           end
         end
+      end
+
+      private
+
+      def method_name
+        @method_name ||= @context.instance_variable_get('@__name__')
       end
     end
   end
