@@ -5,7 +5,7 @@ require 'minitest/same_as_it_ever_was/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'minitest-same_as_it_ever_was'
-  spec.version       = Minitest::SameAsItEverWas::VERSION
+  spec.version       = MiniTest::SameAsItEverWas::VERSION
   spec.authors       = ['Gary Gordon']
   spec.email         = ['gfgordon@gmail.com']
   spec.summary       = %q{Assert responses are consistent.}

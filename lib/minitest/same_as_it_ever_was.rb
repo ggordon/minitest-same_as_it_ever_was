@@ -1,5 +1,5 @@
-require "minitest/same_as_it_ever_was/version"
 require 'minitest'
+require "minitest/same_as_it_ever_was/version"
 
 module MiniTest
   module SameAsItEverWas
