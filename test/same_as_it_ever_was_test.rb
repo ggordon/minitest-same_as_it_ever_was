@@ -21,4 +21,13 @@ describe 'SameAsItEverWas' do
       assert_match(/Must have request to compare/, e.message)
     end
   end
+
+  # describe 'no previous results' do
+  #   it 'should create a file' do
+  #     @response = 'x'
+  #     Request = Struct.new(:path)
+  #     @request = Request.new(path: 'x/y')
+  #     assert_consistent_response
+  #   end
+  # end
 end

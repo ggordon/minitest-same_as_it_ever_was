@@ -5,18 +5,13 @@ module MiniTest
       def equal?(obj, other)
         initialize_results
         compare(obj.deep_dup, other.deep_dup)
-        process_results
+        @results
       end
 
       private
 
       def initialize_results
-        @results = {
-            :result     => :fail,
-            :mismatches => [],
-            :missing    => [],
-            :new        => [],
-        }
+        @results = MiniTest::SameAsItEverWas::Result.new
       end
 
       def compare(elem1, elem2, root=nil)
@@ -37,8 +32,10 @@ module MiniTest
 
       def compare_hashes(elem1, elem2, root)
         (elem1.keys - elem2.keys).each { |key| missing_msg(root, key) }
-        (elem2.keys - elem1.keys).each { |key| new_msg(root, key) }
-        elem1.keys.reject { |k| %w(id created_at updated_at).include? k }.each do |key|
+        (elem2.keys - elem1.keys).each { |key| additional_msg(root, key) }
+        elem1.keys.reject.each do |key|
+          next if %w(id created_at updated_at).include?(key)
+          next if key.match(/.*_id$/)
           compare(elem1[key], elem2[key], path(root, key))
         end
       end
@@ -49,7 +46,7 @@ module MiniTest
 
       def compare_arrays(elem1, elem2, root)
         if elem1.size < elem2.size
-          new_msg(root)
+          additional_msg(root)
         elsif elem1.size > elem2.size
           missing_msg(root)
         end
@@ -61,27 +58,21 @@ module MiniTest
       end
 
       def mismatch_msg(elem1, elem2, root)
-        @results[:mismatches] << "#{root}(expected: #{elem1.to_s}, actual: #{elem2.to_s})"
+        @results.add_mismatch "#{root}(expected: #{elem1.to_s}, actual: #{elem2.to_s})"
       end
 
-      def new_msg(root, key=nil)
-        @results[:new] << path(root, key)
+      def additional_msg(root, key=nil)
+        @results.add_additional path(root, key)
       end
 
       def missing_msg(root, key=nil)
-        @results[:missing] << path(root, key)
+        @results.add_missing path(root, key)
       end
 
       def path(root, key)
         [root, key].compact.join('.')
       end
 
-      def process_results
-        if @results[:mismatches].empty?
-          @results[:result] = :pass
-        end
-        @results
-      end
     end
   end
 end
