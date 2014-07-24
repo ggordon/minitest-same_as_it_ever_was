@@ -5,7 +5,7 @@ require 'minitest/same_as_it_ever_was/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'minitest-same_as_it_ever_was'
-  spec.version       = MiniTest::SameAsItEverWas::VERSION
+  spec.version       = Minitest::SameAsItEverWas::VERSION
   spec.authors       = ['Gary Gordon']
   spec.email         = ['gfgordon@gmail.com']
   spec.summary       = %q{Assert responses are consistent.}
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'minitest', '~> 4.7.5', '~> 4.7.5'
+  spec.add_runtime_dependency 'minitest', '>= 4.7.5', '<= 5.9.9'
   spec.add_runtime_dependency 'activesupport', '>= 3', '< 5'
 
   spec.add_development_dependency 'bundler', '~> 1.6'

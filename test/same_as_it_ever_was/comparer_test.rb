@@ -2,11 +2,11 @@ require 'test_helper'
 require 'active_support/core_ext/object/deep_dup'
 # begin
 #   something that asserts
-# rescue MiniTest::Assertion => e
+# rescue Minitest::Assertion => e
 #   # assert_match(/Key 'a' did not match/, e.message)
 # end
 
-module MiniTest
+module Minitest
   module SameAsItEverWas
     describe Comparer do
 

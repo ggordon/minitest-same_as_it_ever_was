@@ -1,4 +1,4 @@
-module MiniTest
+module Minitest
   module SameAsItEverWas
     class Result
       def initialize

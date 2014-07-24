@@ -1,9 +1,9 @@
 require 'test_helper'
 
-module MiniTest
+module Minitest
   module SameAsItEverWas
     describe Result do
-      let (:result) { MiniTest::SameAsItEverWas::Result.new }
+      let (:result) { Minitest::SameAsItEverWas::Result.new }
 
       it 'should have mismatches if set' do
         result.add_mismatch 'one'

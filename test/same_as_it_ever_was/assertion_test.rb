@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module MiniTest
+module Minitest
   module SameAsItEverWas
     describe Assertion do
       it 'should test something' do

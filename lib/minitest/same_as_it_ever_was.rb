@@ -4,10 +4,11 @@ require "minitest/same_as_it_ever_was/assertion"
 require "minitest/same_as_it_ever_was/comparer"
 require "minitest/same_as_it_ever_was/result"
 
-module MiniTest
+module Minitest
   module Assertions
     def assert_consistent_response
-      MiniTest::SameAsItEverWas::Assertion.new(self).check
+      Minitest::SameAsItEverWas::Assertion.new(self).check
     end
   end
 end
+Minitest = MiniTest unless defined? Minitest

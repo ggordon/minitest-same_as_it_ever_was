@@ -1,4 +1,4 @@
-module MiniTest
+module Minitest
   module SameAsItEverWas
     class Comparer
 
@@ -11,7 +11,7 @@ module MiniTest
       private
 
       def initialize_results
-        @results = MiniTest::SameAsItEverWas::Result.new
+        @results = Minitest::SameAsItEverWas::Result.new
       end
 
       def compare(elem1, elem2, root=nil)

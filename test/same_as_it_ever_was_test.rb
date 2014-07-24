@@ -8,7 +8,7 @@ describe 'SameAsItEverWas' do
   it 'should be an error if no response is defined' do
     begin
       assert_consistent_response
-    rescue MiniTest::Assertion => e
+    rescue Minitest::Assertion => e
       assert_match(/Must have response to compare/, e.message)
     end
   end
@@ -17,7 +17,7 @@ describe 'SameAsItEverWas' do
     @response = nil
     begin
       assert_consistent_response
-    rescue MiniTest::Assertion => e
+    rescue Minitest::Assertion => e
       assert_match(/Must have request to compare/, e.message)
     end
   end
