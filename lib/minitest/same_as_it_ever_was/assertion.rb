@@ -6,30 +6,41 @@ module Minitest
       end
 
       def check
-        @context.assert @context.instance_variable_defined?(:@response), "Must have response to compare."
-        @context.assert @context.instance_variable_defined?(:@request), "Must have request to compare."
-
+        integration_test?
         if results.has_key?(key)
-          c = Comparer.new.equal?(previous_response_body, current_response_body)
-          # ap c
-          if c.pass?
-            if c.additional?
-              @context.skip "New fields: '#{c.additional}', remove saved test results and regenerate."
-            else
-              @context.pass
-            end
+          compare_existing_results
+        else
+          generate_new_results
+        end
+      end
+
+      def generate_new_results
+        results[key] = {
+          'path'   => request.path,
+          'status' => response.status,
+          'body'   => current_response_body
+        }
+        write_results_file
+        @context.skip "No results found for '#{key}' appended to file: #{results_filename}"
+      end
+
+      def compare_existing_results
+        c = Comparer.new.equal?(previous_response_body, current_response_body)
+        # ap c
+        if c.pass?
+          if c.additional?
+            @context.flunk "New fields: '#{c.additional}', remove saved test results and regenerate."
           else
-            @context.flunk "Mismatch: '#{c.mismatches}'; Missing: '#{c.missing}'"
+            @context.pass
           end
         else
-          results[key] = {
-            'path' => request.path,
-            'status' => response.status,
-            'body' => current_response_body
-          }
-          write_results_file
-          @context.skip "No results found for '#{key}' appended to file: #{results_filename}"
+          @context.flunk "Mismatch: '#{c.mismatches}'; Missing: '#{c.missing}'"
         end
+      end
+
+      def integration_test?
+        @context.assert @context.instance_variable_defined?(:@response), "Must have response to compare."
+        @context.assert @context.instance_variable_defined?(:@request), "Must have request to compare."
       end
 
       def previous_response_body
@@ -71,7 +82,13 @@ module Minitest
       end
 
       def method_name
-        @method_name ||= @context.instance_variable_get('@__name__')
+        @method_name ||= begin
+          if @context.respond_to? :name
+            @context.name
+          else
+            @context.instance_variable_get('@__name__')
+          end
+        end
       end
 
       def results_filename
