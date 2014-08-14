@@ -8,9 +8,37 @@ require 'test_helper'
 
 module Minitest
   module SameAsItEverWas
+    class DummyContext
+      def name; 'test0001'; end
+      def test0001; true; end
+    end
+
     describe Assertion do
-      it 'should test something' do
-        skip 'need to test something here.'
+      let (:context) { DummyContext.new }
+      let (:assertion) { Minitest::SameAsItEverWas::Assertion.new(self) }
+
+      it 'must have a response' do
+        begin
+          assertion.check
+        rescue Minitest::Assertion => e
+          assert_match(/Must have response to compare./, e.message)
+        end
+      end
+      it 'must have a request' do
+        @response = ''
+        begin
+          assertion.check
+        rescue Minitest::Assertion => e
+          assert_match(/Must have request to compare./, e.message)
+        end
+      end
+      it 'must compare something' do
+        # probably a better way...
+        @response = ''
+        @request = ''
+        assertion.stub(:compare_results, true) do
+          assert assertion.check
+        end
       end
     end
   end
