@@ -21,6 +21,28 @@ module Minitest
         @diff ||= HashDiff.diff(@obj, @other)
       end
 
+      def result_method
+        if pass?
+          if additional && !additional.empty?
+            :skip
+          else
+            :pass
+          end
+        else
+          :flunk
+        end
+      end
+
+      def result_message
+        if pass?
+          if additional && !additional.empty?
+            "New fields: '#{additional_str}', remove saved test results and regenerate."
+          end
+        else
+          "Mismatch: '#{mismatches_str}'; Missing: '#{missing_str}'"
+        end
+      end
+
       def additional
         @additional ||= diff.select { |x| x.first == '+' }
       end
