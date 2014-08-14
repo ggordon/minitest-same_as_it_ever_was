@@ -7,16 +7,12 @@ module Minitest
         @additional = o[:additional]
       end
 
-      def status
-        if (@mismatches.nil? || @mismatches.empty?) && (@missing.nil? || @missing.empty?)
-          :pass
-        else
-          :fail
-        end
+      def pass?
+        (@mismatches.nil? || @mismatches.empty?) && (@missing.nil? || @missing.empty?)
       end
 
-      def pass?
-        status == :pass
+      def fail?
+        !pass?
       end
 
       def additional?

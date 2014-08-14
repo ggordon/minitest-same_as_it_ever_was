@@ -10,7 +10,7 @@ module Minitest
         result.additional.must_equal nil
         result.mismatches.must_equal 'one,two'
         result.missing.must_equal nil
-        result.status.must_equal :fail
+        assert result.fail?
       end
 
       it 'should have additionals if set' do
@@ -18,7 +18,7 @@ module Minitest
         result.additional.must_equal 'one,two'
         result.mismatches.must_equal nil
         result.missing.must_equal nil
-        result.status.must_equal :pass
+        assert result.pass?
       end
 
       it 'should have missing if set' do
@@ -26,7 +26,7 @@ module Minitest
         result.additional.must_equal nil
         result.mismatches.must_equal nil
         result.missing.must_equal 'one,two'
-        result.status.must_equal :fail
+        assert result.fail?
       end
     end
   end
