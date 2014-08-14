@@ -6,7 +6,7 @@ module Minitest
       let (:result) {  }
 
       it 'should have mismatches if set' do
-        result = Minitest::SameAsItEverWas::Result.new(['one', 'two'], nil, nil)
+        result = Minitest::SameAsItEverWas::Result.new(mismatches: ['one', 'two'])
         result.additional.must_equal nil
         result.mismatches.must_equal 'one,two'
         result.missing.must_equal nil
@@ -14,7 +14,7 @@ module Minitest
       end
 
       it 'should have additionals if set' do
-        result = Minitest::SameAsItEverWas::Result.new(nil, nil, ['one', 'two'])
+        result = Minitest::SameAsItEverWas::Result.new(additional: ['one', 'two'])
         result.additional.must_equal 'one,two'
         result.mismatches.must_equal nil
         result.missing.must_equal nil
@@ -22,7 +22,7 @@ module Minitest
       end
 
       it 'should have missing if set' do
-        result = Minitest::SameAsItEverWas::Result.new(nil, ['one', 'two'], nil)
+        result = Minitest::SameAsItEverWas::Result.new(missing: ['one', 'two'])
         result.additional.must_equal nil
         result.mismatches.must_equal nil
         result.missing.must_equal 'one,two'

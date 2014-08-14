@@ -1,10 +1,10 @@
 module Minitest
   module SameAsItEverWas
     class Result
-      def initialize(mismatches, missing, additional)
-        @mismatches = mismatches
-        @missing    = missing
-        @additional = additional
+      def initialize(o={})
+        @mismatches = o[:mismatches]
+        @missing    = o[:missing]
+        @additional = o[:additional]
       end
 
       def status
