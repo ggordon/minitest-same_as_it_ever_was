@@ -4,27 +4,46 @@ module Minitest
   module SameAsItEverWas
     class Comparer
 
-      def equal?(obj, other)
-        @diff = HashDiff.diff(obj, other)
-        Minitest::SameAsItEverWas::Result.new(
-          mismatches: mismatches,
-          missing: missing,
-          additional: additional
-        )
+      def initialize(obj, other)
+        @obj = obj
+        @other = other
+      end
+
+      def pass?
+        (mismatches.nil? || mismatches.empty?) && (missing.nil? || missing.empty?)
+      end
+
+      def fail?
+        !pass?
+      end
+
+      def diff
+        @diff ||= HashDiff.diff(@obj, @other)
       end
 
       def additional
-        @diff.select { |x| x.first == '+' }
+        @additional ||= diff.select { |x| x.first == '+' }
       end
 
       def missing
-        @diff.select { |x| x.first == '-' }
+        @missing ||= diff.select { |x| x.first == '-' }
       end
 
       def mismatches
-        @diff.select { |x| x.first == '~' }
+        @mismatches ||= diff.select { |x| x.first == '~' }
       end
 
+      def additional_str
+        additional && additional.join(',')
+      end
+
+      def missing_str
+        missing && missing.join(',')
+      end
+
+      def mismatches_str
+        mismatches && mismatches.join(',')
+      end
     end
   end
 end

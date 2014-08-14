@@ -11,38 +11,38 @@ module Minitest
     describe Comparer do
 
       it 'should compare 2 identical simple hashes' do
-        results = Comparer.new.equal?(base, base)
+        results = Comparer.new(base, base)
         assert results.pass?
       end
 
       it 'should not fail if an extra key' do
-        results = Comparer.new.equal?(base, extra_key)
+        results = Comparer.new(base, extra_key)
         assert results.pass?
-        assert_equal('+,a.g,6', results.additional)
+        assert_equal('+,a.g,6', results.additional_str)
       end
 
       it 'should not fail if an extra array elem' do
-        results = Comparer.new.equal?(base, extra_array_elem)
+        results = Comparer.new(base, extra_array_elem)
         assert results.pass?
-        assert_equal('+,a.d[2],h', results.additional)
+        assert_equal('+,a.d[2],h', results.additional_str)
       end
 
       it 'should fail if missing key' do
-        results = Comparer.new.equal?(base, missing_key)
+        results = Comparer.new(base, missing_key)
         assert results.fail?
-        assert_equal('-,a.c,3', results.missing)
+        assert_equal('-,a.c,3', results.missing_str)
       end
 
       it 'should fail if missing array elem' do
-        results = Comparer.new.equal?(base, missing_array_elem)
+        results = Comparer.new(base, missing_array_elem)
         assert results.fail?
-        assert_equal('-,a.d[1],f', results.missing)
+        assert_equal('-,a.d[1],f', results.missing_str)
       end
 
       it 'should report an error if 2 simple hashes are different' do
-        results = Comparer.new.equal?(base, wrong_value)
+        results = Comparer.new(base, wrong_value)
         assert results.fail?
-        assert_equal('~,a.c,3,5', results.mismatches)
+        assert_equal('~,a.c,3,5', results.mismatches_str)
       end
 
       let(:base) {
