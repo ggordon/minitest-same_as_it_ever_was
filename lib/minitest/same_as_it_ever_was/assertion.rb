@@ -14,14 +14,18 @@ module Minitest
         end
       end
 
+      def results_file
+        @results_file ||= ResultsFile.new(@context)
+      end
+
       def generate_new_results
         results[key] = {
           'path'   => request.path,
           'status' => response.status,
           'body'   => current_response_body
         }
-        write_results_file
-        @context.skip "No results found for '#{key}' appended to file: #{results_filename}"
+        results_file.write(results)
+        @context.skip "No results found for '#{key}' appended to file: #{results_file.filename}"
       end
 
       def compare_existing_results
@@ -62,19 +66,7 @@ module Minitest
       end
 
       def results
-        @results ||= results_file_exists? ? load_results_file : Hash.new
-      end
-
-      def results_file_exists?
-        File.exists?(results_filename)
-      end
-
-      def load_results_file
-        YAML.load_file(results_filename) rescue Hash.new
-      end
-
-      def write_results_file
-        File.open(results_filename, 'w') { |f| f.write(results.to_yaml) }
+        results_file.contents
       end
 
       def key
@@ -91,11 +83,6 @@ module Minitest
         end
       end
 
-      def results_filename
-        return @results_filename if defined? @results_filename
-        filename = @context.method(method_name.to_sym).source_location.first
-        @results_filename = filename.gsub('_test.rb', '_resp.yml')
-      end
     end
   end
 end
