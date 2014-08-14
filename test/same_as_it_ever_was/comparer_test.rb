@@ -18,31 +18,31 @@ module Minitest
       it 'should not fail if an extra key' do
         results = Comparer.new.equal?(base, extra_key)
         assert_equal(:pass, results.status)
-        assert_equal('a.g', results.additional)
+        assert_equal('+,a.g,6', results.additional)
       end
 
       it 'should not fail if an extra array elem' do
         results = Comparer.new.equal?(base, extra_array_elem)
         assert_equal(:pass, results.status)
-        assert_equal('a.d', results.additional)
+        assert_equal('+,a.d[2],h', results.additional)
       end
 
       it 'should fail if missing key' do
         results = Comparer.new.equal?(base, missing_key)
         assert_equal(:fail, results.status)
-        assert_equal('a.c', results.missing)
+        assert_equal('-,a.c,3', results.missing)
       end
 
       it 'should fail if missing array elem' do
         results = Comparer.new.equal?(base, missing_array_elem)
         assert_equal(:fail, results.status)
-        assert_equal('a.d', results.missing)
+        assert_equal('-,a.d[1],f', results.missing)
       end
 
       it 'should report an error if 2 simple hashes are different' do
         results = Comparer.new.equal?(base, wrong_value)
         assert_equal(:fail, results.status)
-        assert_equal('a.c(expected: 3, actual: 5)', results.mismatches)
+        assert_equal('~,a.c,3,5', results.mismatches)
       end
 
       let(:base) {
